@@ -17,4 +17,5 @@ public class Manager {
     @OneToOne
     @JoinColumn(name = "shelterName")
     private Shelter shelter;
+    private String token;
 }

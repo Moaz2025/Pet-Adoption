@@ -16,4 +16,5 @@ public class Adopter {
     private String password;
     private String salt;
     private String phone;
+    private String token;
 }

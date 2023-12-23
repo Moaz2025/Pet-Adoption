@@ -18,4 +18,5 @@ public class Staff {
     @ManyToOne
     @JoinColumn(name = "shelterName")
     private Shelter shelter;
+    private String token;
 }

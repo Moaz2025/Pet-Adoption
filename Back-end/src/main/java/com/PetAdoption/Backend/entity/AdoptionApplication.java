@@ -9,6 +9,8 @@ import lombok.Data;
 public class AdoptionApplication {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @ManyToOne
     @JoinColumn(name = "adopterEmail")
     private Adopter adopter;

@@ -9,6 +9,8 @@ import lombok.Data;
 public class Attachment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @ManyToOne
     @JoinColumn(name = "petId")
     private Pet pet;
