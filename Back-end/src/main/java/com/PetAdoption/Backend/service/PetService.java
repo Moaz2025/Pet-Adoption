@@ -24,22 +24,22 @@ public class PetService {
     public List<Pet> findAllPets(){return petRepository.findAll();}
     public List<Pet> findPetByName(String name){
         if(name == null) return Collections.emptyList();
-        return petRepository.findByNameLikeIgnoreCase(name);
+        return petRepository.findByNameContainsIgnoreCase(name);
     }
 
     //Searching by all valid attributes
     public List findByBehavior(String behavior){
         // to avoid null pointer exception
         if(behavior == null) return Collections.emptyList();
-        return petRepository.findByBehaviorLikeIgnoreCase(behavior);
+        return petRepository.findByBehaviorContainsIgnoreCase(behavior);
     }
     public List findByBreed(String breed){
         if(breed == null) return Collections.emptyList();
-        return petRepository.findByBreedLikeIgnoreCase(breed);
+        return petRepository.findByBreedContainsIgnoreCase(breed);
     }
     public List findByGender(String gender){
         if(gender == null) return Collections.emptyList();
-        return petRepository.findByGenderLikeIgnoreCase(gender);
+        return petRepository.findByGenderContainsIgnoreCase(gender);
     }
     public List findByHouseTraining(Boolean houseTraining){
         if(houseTraining == null) return Collections.emptyList();
@@ -47,33 +47,34 @@ public class PetService {
     }
     public List findByNeutering(String neutering){
         if(neutering == null) return Collections.emptyList();
-        return petRepository.findByNeuteringLikeIgnoreCase(neutering);
+        return petRepository.findByNeuteringContainsIgnoreCase(neutering);
     }
     public List findBySpaying(String spaying){
         if(spaying == null) return Collections.emptyList();
-        return petRepository.findBySpayingLikeIgnoreCase(spaying);
+        return petRepository.findBySpayingContainsIgnoreCase(spaying);
     }
     public List<Pet> findBySpecies(String species){
         if(species == null) return Collections.emptyList();
-        return petRepository.findBySpeciesLikeIgnoreCase(species);
+        return petRepository.findBySpeciesContainsIgnoreCase(species);
     }
     public List<Pet> findByVaccination(String vaccination){
         if(vaccination == null) return Collections.emptyList();
-        return petRepository.findByVaccinationLikeIgnoreCase(vaccination);
+        return petRepository.findByVaccinationContainsIgnoreCase(vaccination);
     }
     public List<Pet> findByShelterName(String shelterName){
         if(shelterName == null) return Collections.emptyList();
-        return petRepository.findByShelterNameLikeIgnoreCase(shelterName);
+        return petRepository.findByShelterNameContainsIgnoreCase(shelterName);
     }
 
-    public List<Pet> findByAge(Float age){
+    public List<Pet> findByAgeLessThan(Float age){
         if(age == null) return Collections.emptyList();
-        return petRepository.findByAge(age);
+        return petRepository.findByAgeLessThan(age);
     }
     public PetDTO convertToPetDTO(Pet pet){
         if(pet == null) return null;
         PetDTO petDTO = new PetDTO();
         petDTO.setId(pet.getId());
+        if(petDTO.getId() == 0)return null;
         petDTO.setAge(pet.getAge());
         petDTO.setBehavior(pet.getBehavior());
         petDTO.setBreed(pet.getBreed());

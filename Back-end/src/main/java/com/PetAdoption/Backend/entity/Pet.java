@@ -26,4 +26,8 @@ public class Pet {
     private String vaccination;
     private String spaying;
     private String neutering;
+
+//    public Pet orElse(Object o) {
+//        return null;
+//    }
 }

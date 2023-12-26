@@ -9,16 +9,16 @@ import java.util.Optional;
 
 public interface PetRepository extends JpaRepository<Pet, Integer> {
 
-    // I implemented them all as in the report say Like
-    List<Pet> findByNameLikeIgnoreCase(String name);
-    List<Pet> findByAge(Float age);
-    List<Pet> findByBehaviorLikeIgnoreCase(String behavior);
-    List<Pet> findByBreedLikeIgnoreCase(String breed);
-    List<Pet> findByGenderLikeIgnoreCase(String gender);
+    // I implemented them all as in the report say Contains
+    List<Pet> findByNameContainsIgnoreCase(String name);
+    List<Pet> findByAgeLessThan(Float age);
+    List<Pet> findByBehaviorContainsIgnoreCase(String behavior);
+    List<Pet> findByBreedContainsIgnoreCase(String breed);
+    List<Pet> findByGenderContainsIgnoreCase(String gender);
     List<Pet> findByHouseTraining(Boolean houseTraining);
-    List<Pet> findByNeuteringLikeIgnoreCase(String neutering);
-    List<Pet> findBySpayingLikeIgnoreCase(String spaying);
-    List<Pet> findBySpeciesLikeIgnoreCase(String species);
-    List<Pet> findByVaccinationLikeIgnoreCase(String vaccination);
-    List<Pet> findByShelterNameLikeIgnoreCase(String shelterName);
+    List<Pet> findByNeuteringContainsIgnoreCase(String neutering);
+    List<Pet> findBySpayingContainsIgnoreCase(String spaying);
+    List<Pet> findBySpeciesContainsIgnoreCase(String species);
+    List<Pet> findByVaccinationContainsIgnoreCase(String vaccination);
+    List<Pet> findByShelterNameContainsIgnoreCase(String shelterName);
 }
