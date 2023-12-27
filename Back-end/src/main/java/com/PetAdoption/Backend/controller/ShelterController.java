@@ -17,8 +17,24 @@ public class ShelterController {
     @Autowired
     private ShelterService shelterService;
 
-    @PutMapping("/manageShelter")
-    public ResponseEntity<ShelterResponse> editShelter(@RequestHeader("Authorization") String token, @RequestBody Shelter shelter) {
+    @PutMapping("/editShelter")
+    public ResponseEntity<String> editShelter(@RequestHeader("Authorization") String token, @RequestBody Shelter shelter) {
+        token = token.replace("Bearer ", "");
+        ShelterResponse shelterResponse = new ShelterResponse();
+        if(managerService.getManagerByToken(token) == null){
+            return new ResponseEntity<>("Not authorized manager", HttpStatus.FORBIDDEN);
+        }
+        Manager manager = managerService.getManagerByToken(token);
+        String shelterName = manager.getShelter().getName();
+        Shelter dataShelter = shelterService.getShelterByName(shelterName);
+        dataShelter.setLocation(shelter.getLocation());
+        dataShelter.setPhone(shelter.getPhone());
+        shelterService.updateShelter(dataShelter);
+        return new ResponseEntity<>("Shelter updated successfully", HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/getShelter")
+    public ResponseEntity<ShelterResponse> getShelter(@RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         ShelterResponse shelterResponse = new ShelterResponse();
         if(managerService.getManagerByToken(token) == null){
@@ -28,11 +44,8 @@ public class ShelterController {
         Manager manager = managerService.getManagerByToken(token);
         String shelterName = manager.getShelter().getName();
         Shelter dataShelter = shelterService.getShelterByName(shelterName);
-        dataShelter.setLocation(shelter.getLocation());
-        dataShelter.setPhone(shelter.getPhone());
-        shelterService.updateShelter(dataShelter);
-        shelterResponse.setMessage("Shelter updated successfully");
         shelterResponse.setShelter(dataShelter);
+        shelterResponse.setMessage("Shelter got successfully");
         return new ResponseEntity<>(shelterResponse, HttpStatus.ACCEPTED);
     }
 }
