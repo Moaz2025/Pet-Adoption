@@ -1,19 +1,12 @@
 package com.PetAdoption.Backend.entity;
 
-import jakarta.persistence.*;
+
 import lombok.Data;
 
-@Entity
 @Data
-@Table(name = "Pets")
-public class Pet {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PetDTO {
     private int id;
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "shelterName")
     private Shelter shelter;
     private String species;
     private String breed;
@@ -26,8 +19,4 @@ public class Pet {
     private String vaccination;
     private String spaying;
     private String neutering;
-
-//    public Pet orElse(Object o) {
-//        return null;
-//    }
 }
