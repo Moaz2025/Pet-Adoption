@@ -37,4 +37,7 @@ public class StaffService {
         staffRepository.delete(staff);
     }
 
+    public boolean existsByToken(String token) { return staffRepository.existsByToken(token);}
+
+
 }
