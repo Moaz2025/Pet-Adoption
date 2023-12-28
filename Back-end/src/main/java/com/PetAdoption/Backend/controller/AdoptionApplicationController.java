@@ -23,26 +23,26 @@ public class AdoptionApplicationController {
     StaffService     ss;
     @GetMapping("/list")
     List<AdoptionApplicationDTO> getAllRequests(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
-              return appService.getAllRequests(token);
+        return appService.getAllRequests(token);
     }
 
 
     @PutMapping("/accept/{id}")
     ResponseEntity<String> acceptRequest(@PathVariable(name="id") int id ,@RequestHeader(HttpHeaders.AUTHORIZATION) String token ){
-       if (ss.existsByToken(token))
-       {
-           if(appService.acceptApp(id)){
-               return ResponseEntity.status(200).body("Done");
-           }
-           else{
-               return ResponseEntity.status(409).body("This Pet is booked");
+        if (ss.existsByToken(token))
+        {
+            if(appService.acceptApp(id)){
+                return ResponseEntity.status(200).body("Done");
+            }
+            else{
+                return ResponseEntity.status(409).body("This Pet is booked");
 
-           }
-       }
-       else
-       {
-           return ResponseEntity.status(409).body("Not Authorized");
-       }
+            }
+        }
+        else
+        {
+            return ResponseEntity.status(409).body("Not Authorized");
+        }
 
     }
 
@@ -51,10 +51,10 @@ public class AdoptionApplicationController {
     ResponseEntity<String> refuseRequest(@PathVariable(name="id") int id ,@RequestHeader(HttpHeaders.AUTHORIZATION) String token ){
         if (ss.existsByToken(token))
         {
-                   if( appService.refuseApp(id))
-                       return ResponseEntity.status(200).body("Done");
-                   else
-                       return ResponseEntity.status(409).body("the app have been accepted before");
+            if( appService.refuseApp(id))
+                return ResponseEntity.status(200).body("Done");
+            else
+                return ResponseEntity.status(409).body("the app have been accepted before");
 
 
 

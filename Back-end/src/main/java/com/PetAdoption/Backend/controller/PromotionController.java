@@ -1,10 +1,7 @@
 package com.PetAdoption.Backend.controller;
 
 import com.PetAdoption.Backend.entity.*;
-import com.PetAdoption.Backend.service.AdminService;
-import com.PetAdoption.Backend.service.AdopterService;
-import com.PetAdoption.Backend.service.ManagerService;
-import com.PetAdoption.Backend.service.StaffService;
+import com.PetAdoption.Backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +23,19 @@ public class PromotionController {
     private ManagerService managerService;
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private ShelterService shelterService;
 
     @GetMapping("/getAllAdopters")
     public ResponseEntity<AdopterResponse> getAllAdopters(@RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         AdopterResponse adopterResponse = new AdopterResponse();
-        if(managerService.getManagerByToken(token) == null && adminService.getAdminByToken(token) == null){
+
+        if (managerService.getManagerByToken(token) == null && adminService.getAdminByToken(token) == null) {
             adopterResponse.setMessage("Not authorized");
             return new ResponseEntity<>(adopterResponse, HttpStatus.FORBIDDEN);
         }
+
         adopterResponse.setMessage("List of adopters");
         List<Adopter> dataAdopter;
         dataAdopter = adopterService.getAllAdopters();
@@ -52,55 +53,86 @@ public class PromotionController {
     }
 
     @PostMapping("/promoteToStaff")
-    public ResponseEntity<String> promoteToStaff(@RequestHeader("Authorization") String token, @RequestBody String email){
+    public ResponseEntity<String> promoteToStaff(@RequestHeader("Authorization") String token, @RequestBody StaffData staffData) {
         token = token.replace("Bearer ", "");
-        if(managerService.getManagerByToken(token) == null){
+
+        if (managerService.getManagerByToken(token) == null)
             return new ResponseEntity<>("Not authorized manager", HttpStatus.FORBIDDEN);
-        }
-        if(adopterService.getAdopterByEmail(email) == null){
+
+        String email = staffData.getEmail();
+
+        if (adopterService.getAdopterByEmail(email) == null)
             return new ResponseEntity<>("No adopter with this email", HttpStatus.NOT_FOUND);
-        }
+
         Adopter adopter = adopterService.getAdopterByEmail(email);
         int atIndex = email.indexOf('@');
         String prefix = email.substring(0, atIndex);
         String suffix = email.substring(atIndex);
-        String modifiedEmail = prefix + "_staff" + suffix;
-        if(staffService.getStaffByEmail(modifiedEmail) != null){
-            return new ResponseEntity<>("Already promoted", HttpStatus.CONFLICT);
-        }
+        String staffModifiedEmail = prefix + "_staff" + suffix;
+
+        if (staffService.getStaffByEmail(staffModifiedEmail) != null)
+            return new ResponseEntity<>("Already promoted as staff", HttpStatus.CONFLICT);
+
+        String managerModifiedEmail = prefix + "_manager" + suffix;
+
+        if (managerService.getManagerByEmail(managerModifiedEmail) != null)
+            return new ResponseEntity<>("Already promoted as manager", HttpStatus.CONFLICT);
+
+        Manager manager = managerService.getManagerByToken(token);
+        Shelter shelter = manager.getShelter();
         Staff staff = new Staff();
-        staff.setEmail(modifiedEmail);
+        staff.setEmail(staffModifiedEmail);
         staff.setName(adopter.getName());
         staff.setSalt(adopter.getSalt());
         staff.setPassword(adopter.getPassword());
         staff.setPhone(adopter.getPhone());
+        staff.setRole(staffData.getRole());
+        staff.setShelter(shelter);
         staffService.createStaff(staff);
         return new ResponseEntity<>("Adopter promoted successfully", HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/promoteToManager")
-    public ResponseEntity<String> promoteToManager(@RequestHeader("Authorization") String token, @RequestBody String email){
+    public ResponseEntity<String> promoteToManager(@RequestHeader("Authorization") String token, @RequestBody ManagerData managerData) {
         token = token.replace("Bearer ", "");
-        if(adminService.getAdminByToken(token) == null){
+
+        if (adminService.getAdminByToken(token) == null)
             return new ResponseEntity<>("Not authorized admin", HttpStatus.FORBIDDEN);
-        }
-        if(adopterService.getAdopterByEmail(email) == null){
+
+        String email = managerData.getEmail();
+
+        if (adopterService.getAdopterByEmail(email) == null)
             return new ResponseEntity<>("No adopter with this email", HttpStatus.NOT_FOUND);
-        }
+
         Adopter adopter = adopterService.getAdopterByEmail(email);
         int atIndex = email.indexOf('@');
         String prefix = email.substring(0, atIndex);
         String suffix = email.substring(atIndex);
-        String modifiedEmail = prefix + "_manager" + suffix;
-        if(adminService.getAdminByEmail(modifiedEmail) != null){
-            return new ResponseEntity<>("Already promoted", HttpStatus.CONFLICT);
-        }
+        String staffModifiedEmail = prefix + "_staff" + suffix;
+
+        if (staffService.getStaffByEmail(staffModifiedEmail) != null)
+            return new ResponseEntity<>("Already promoted as staff", HttpStatus.CONFLICT);
+
+        String managerModifiedEmail = prefix + "_manager" + suffix;
+
+        if (managerService.getManagerByEmail(managerModifiedEmail) != null)
+            return new ResponseEntity<>("Already promoted as manager", HttpStatus.CONFLICT);
+
+        if (shelterService.getShelterByName(managerData.getShelterName()) != null)
+            return new ResponseEntity<>("Shelter name already used", HttpStatus.CONFLICT);
+
+        Shelter shelter = new Shelter();
+        shelter.setName(managerData.getShelterName());
+        shelter.setLocation(managerData.getShelterLocation());
+        shelter.setPhone(managerData.getShelterPhone());
+        shelterService.createShelter(shelter);
         Manager manager = new Manager();
-        manager.setEmail(modifiedEmail);
+        manager.setEmail(managerModifiedEmail);
         manager.setName(adopter.getName());
         manager.setSalt(adopter.getSalt());
         manager.setPassword(adopter.getPassword());
         manager.setPhone(adopter.getPhone());
+        manager.setShelter(shelter);
         managerService.createManager(manager);
         return new ResponseEntity<>("Adopter promoted successfully", HttpStatus.ACCEPTED);
     }

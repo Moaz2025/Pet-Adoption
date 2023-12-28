@@ -8,8 +8,7 @@ import java.util.List;
 @Repository
 
 public interface AdoptionApplicationRepository extends JpaRepository<AdoptionApplication, Integer> {
-   List<AdoptionApplication> findByPet_Id(int id);
-   AdoptionApplication   findById(int id);
+    List<AdoptionApplication> findByPet_Id(int id);
+    AdoptionApplication   findById(int id);
 
 }
-
