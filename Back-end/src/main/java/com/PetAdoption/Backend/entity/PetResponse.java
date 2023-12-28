@@ -4,10 +4,10 @@ package com.PetAdoption.Backend.entity;
 import lombok.Data;
 
 @Data
-public class PetDTO {
+public class PetResponse {
     private int id;
     private String name;
-    private Shelter shelter;
+    private String shelterName; //edited
     private String species;
     private String breed;
     private boolean isBooked;

@@ -1,19 +1,18 @@
 package com.PetAdoption.Backend.service;
 
 import com.PetAdoption.Backend.entity.Pet;
-import com.PetAdoption.Backend.entity.PetDTO;
-import com.PetAdoption.Backend.repository.PetRepository;
+import com.PetAdoption.Backend.entity.PetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PetService {
     @Autowired
-    private PetRepository petRepository;
+    private com.PetAdoption.Backend.repository.PetRepository petRepository;
     // viewing the pet
 
     public Pet findPetProfileById(Integer id){
@@ -70,24 +69,35 @@ public class PetService {
         if(age == null) return Collections.emptyList();
         return petRepository.findByAgeLessThan(age);
     }
-    public PetDTO convertToPetDTO(Pet pet){
+    public PetResponse convertToPetResponse(Pet pet){
         if(pet == null) return null;
-        PetDTO petDTO = new PetDTO();
-        petDTO.setId(pet.getId());
-        if(petDTO.getId() == 0)return null;
-        petDTO.setAge(pet.getAge());
-        petDTO.setBehavior(pet.getBehavior());
-        petDTO.setBreed(pet.getBreed());
-        petDTO.setDescription(pet.getDescription());
-        petDTO.setBooked(pet.isBooked());
-        petDTO.setGender(pet.getGender());
-        petDTO.setName(pet.getName());
-        petDTO.setShelter(pet.getShelter());
-        petDTO.setNeutering(pet.getNeutering());
-        petDTO.setSpaying(pet.getSpaying());
-        petDTO.setSpecies(pet.getSpecies());
-        petDTO.setHouseTraining(pet.isHouseTraining());
-        petDTO.setVaccination(pet.getVaccination());
-        return petDTO;
+        PetResponse petResponse = new PetResponse();
+        petResponse.setId(pet.getId());
+        if(petResponse.getId() == 0)return null;
+        petResponse.setAge(pet.getAge());
+        petResponse.setBehavior(pet.getBehavior());
+        petResponse.setBreed(pet.getBreed());
+        petResponse.setDescription(pet.getDescription());
+        petResponse.setBooked(pet.isBooked());
+        petResponse.setGender(pet.getGender());
+        petResponse.setName(pet.getName());
+        if(pet.getShelter() == null)
+            {petResponse.setShelterName(null);}
+        else
+            {petResponse.setShelterName(pet.getShelter().getName());}
+        petResponse.setNeutering(pet.getNeutering());
+        petResponse.setSpaying(pet.getSpaying());
+        petResponse.setSpecies(pet.getSpecies());
+        petResponse.setHouseTraining(pet.isHouseTraining());
+        petResponse.setVaccination(pet.getVaccination());
+        return petResponse;
+    }
+    public List<PetResponse> convertToPetResponseList(List<Pet> pets){
+        List<Pet> petList = pets;
+        List<PetResponse> petResponseList = new ArrayList<>();
+        for(Pet pet : petList){
+            petResponseList.add(convertToPetResponse(pet));
+        }
+        return petResponseList;
     }
 }

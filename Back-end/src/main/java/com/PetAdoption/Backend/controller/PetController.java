@@ -1,17 +1,15 @@
 package com.PetAdoption.Backend.controller;
 
 import com.PetAdoption.Backend.entity.Pet;
-import com.PetAdoption.Backend.entity.PetDTO;
+import com.PetAdoption.Backend.entity.PetResponse;
 import com.PetAdoption.Backend.service.PetService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.swing.text.html.parser.Entity;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,75 +21,75 @@ public class PetController {
 
 
     @GetMapping("/getAllPets")
-    public List<Pet> getAllPets(){
-        return petService.findAllPets();
+    public List<PetResponse> getAllPets(){
+        return petService.convertToPetResponseList(petService.findAllPets());
     }
     @Transactional
     @GetMapping("/getPetById")
-    public PetDTO getPetById(@RequestParam(name="id") Integer id){
+    public PetResponse getPetById(@RequestParam(name="id") Integer id){
         if(id == null)return null;
-        PetDTO petDTO ;
+        PetResponse petResponse;
         Pet pet;
         try {
             // use pet
             pet = petService.findPetProfileById(id);
-            System.out.println(pet.getId());
+//            System.out.println(pet.getId());
             if(pet == null) return null;
-            petDTO = petService.convertToPetDTO(pet);
+            petResponse = petService.convertToPetResponse(pet);
         }catch (EntityNotFoundException e){
             System.out.println(e);
             return null;
         }
 
-        return petDTO;
+        return petResponse;
     }
 
 
 
     @GetMapping("/getPetByName")
-    public List<Pet> getPetByName(@RequestParam(name="name") String name){
-        return petService.findPetByName(name);
+    public List<PetResponse> getPetByName(@RequestParam(name="name") String name){
+        return petService.convertToPetResponseList(petService.findPetByName(name));
     }
 
-    @GetMapping("getPetByBehavior")
-    public List<Pet> getPetByBehavior(@RequestParam(name="behavior") String behavior){
-        return petService.findByBehavior(behavior);
+    @GetMapping("/getPetByBehavior")
+    public List<PetResponse> getPetByBehavior(@RequestParam(name="behavior") String behavior){
+        return petService.convertToPetResponseList(petService.findByBehavior(behavior));
     }
     @GetMapping("/getPetByBreed")
-    public List<Pet> getPetByBreed(@RequestParam(name="breed") String breed){
-        return petService.findByBreed(breed);
+    public List<PetResponse> getPetByBreed(@RequestParam(name="breed") String breed){
+        return petService.convertToPetResponseList(petService.findByBreed(breed));
     }
     @GetMapping("/getPetByGender")
-    public List<Pet> getPetByGender(@RequestParam(name="gender") String gender){
-        return petService.findByGender(gender);
+    public List<PetResponse> getPetByGender(@RequestParam(name="gender") String gender){
+        return petService.convertToPetResponseList(petService.findByGender(gender));
     }
     @GetMapping("/getPetByHouseTraining")
-    public List<Pet> getPetByHouseTraining(@RequestParam(name="houseTraining") Boolean houseTraining){
-        return petService.findByHouseTraining(houseTraining);
+    public List<PetResponse> getPetByHouseTraining(@RequestParam(name="houseTraining") Boolean houseTraining){
+        return petService.convertToPetResponseList(petService.findByHouseTraining(houseTraining));
     }
-    @GetMapping("getPetByNeutering")
-    public List<Pet> getPetByNeutering(@RequestParam(name="neutering") String neutering){
-        return petService.findByNeutering(neutering);
+    @GetMapping("/getPetByNeutering")
+    public List<PetResponse> getPetByNeutering(@RequestParam(name="neutering") String neutering){
+        return petService.convertToPetResponseList(petService.findByNeutering(neutering));
     }
     @GetMapping("/getPetBySpaying")
-    public List<Pet> getPetBySpaying(@RequestParam(name="spaying") String spaying){
-        return petService.findBySpaying(spaying);
+    public List<PetResponse> getPetBySpaying(@RequestParam(name="spaying") String spaying){
+        return petService.convertToPetResponseList(petService.findBySpaying(spaying));
     }
     @GetMapping("/getPetBySpecies")
-    public List<Pet> getPetBySpecies(@RequestParam(name="species") String species){
-        return petService.findBySpecies(species);
+    public List<PetResponse> getPetBySpecies(@RequestParam(name="species") String species){
+        return petService.convertToPetResponseList(petService.findBySpecies(species));
     }
 
     @GetMapping("/getPetByVaccination")
-    public List<Pet> getPetByVaccination(@RequestParam(name="vaccination") String vaccination){
-        return petService.findByVaccination(vaccination);
+    public List<PetResponse> getPetByVaccination(@RequestParam(name="vaccination") String vaccination){
+        return petService.convertToPetResponseList(petService.findByVaccination(vaccination));
     }
     @GetMapping("/getPetByShelter")
-    public List<Pet> getPetByShelter(@RequestParam(name="shelter") String shelter){
-        return petService.findByShelterName(shelter);
+    public List<PetResponse> getPetByShelter(@RequestParam(name="shelter") String shelter){
+        return petService.convertToPetResponseList(petService.findByShelterName(shelter));
     }
     @GetMapping("/getPetByAge")
-    public List<Pet> getPetByAge(@RequestParam(name="age") Float age){
-        return petService.findByAgeLessThan(age);
+    public List<PetResponse> getPetByAge(@RequestParam(name="age") Float age){
+        return petService.convertToPetResponseList(petService.findByAgeLessThan(age));
     }
 }

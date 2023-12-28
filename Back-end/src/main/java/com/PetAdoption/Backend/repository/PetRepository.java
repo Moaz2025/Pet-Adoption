@@ -1,12 +1,12 @@
 package com.PetAdoption.Backend.repository;
 
 import com.PetAdoption.Backend.entity.Pet;
-import com.PetAdoption.Backend.entity.PetDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
+@Repository
 public interface PetRepository extends JpaRepository<Pet, Integer> {
 
     // I implemented them all as in the report say Contains
