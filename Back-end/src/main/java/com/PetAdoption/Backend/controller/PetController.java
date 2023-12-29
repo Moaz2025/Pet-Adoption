@@ -1,8 +1,5 @@
 package com.PetAdoption.Backend.controller;
-import com.PetAdoption.Backend.entity.AttachmentDTO;
-import com.PetAdoption.Backend.entity.Pet;
-import com.PetAdoption.Backend.entity.PetResponse;
-import com.PetAdoption.Backend.entity.petAddFormDTO;
+import com.PetAdoption.Backend.entity.*;
 import com.PetAdoption.Backend.service.PetService;
 import com.PetAdoption.Backend.service.StaffService;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +45,18 @@ public class PetController {
     }
 
     @GetMapping("/getAllPets")
-    public List<PetResponse> getAllPets(){
-        return ps.convertToPetResponseList(ps.findAllPets());
+    public List<PetResponse> getAllPets(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        token = token.replace("Bearer ", "");
+        if(!ss.existsByToken(token))
+            return ps.convertToPetResponseList(ps.findAllPets());
+        Staff staff = ss.getStaffByToken(token);
+        List<Pet> list = new ArrayList<>();
+        for(Pet pet : ps.findAllPets()){
+            if(pet.getShelter().getName().equalsIgnoreCase(staff.getShelter().getName())){
+                list.add(pet);
+            }
+        }
+        return ps.convertToPetResponseList(list);
     }
     @Transactional
     @GetMapping("/getPetById")

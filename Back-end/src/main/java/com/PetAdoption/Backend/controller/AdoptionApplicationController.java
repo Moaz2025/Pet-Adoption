@@ -33,12 +33,17 @@ public class AdoptionApplicationController {
     AdopterRepository adopterRepository;
     @GetMapping("/list")
     List<AdoptionApplicationDTO> getAllRequests(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        token = token.replace("Bearer ", "");
+//        List<AdoptionApplicationDTO>
         return appService.getAllRequests(token);
     }
 
 
     @PutMapping("/accept/{id}")
-    ResponseEntity<String> acceptRequest(@PathVariable(name="id") int id ,@RequestHeader(HttpHeaders.AUTHORIZATION) String token ){
+    ResponseEntity<String> acceptRequest(@RequestHeader(HttpHeaders.AUTHORIZATION) String token ,@PathVariable(name="id") int id){
+        System.out.println("Token = " + token);
+        token = token.replace("Bearer ", "");
+        System.out.println(token);
         if (ss.existsByToken(token))
         {
             if(appService.acceptApp(id)){
@@ -59,6 +64,8 @@ public class AdoptionApplicationController {
     //refuseRequest
     @PutMapping("/refuse/{id}")
     ResponseEntity<String> refuseRequest(@PathVariable(name="id") int id ,@RequestHeader(HttpHeaders.AUTHORIZATION) String token ){
+        token = token.replace("Bearer ", "");
+
         if (ss.existsByToken(token))
         {
             if( appService.refuseApp(id))

@@ -38,8 +38,6 @@ public class AdoptionApplicationService {
             return "can't adopt this pet";
         }
     }
-
-
     public List<AdoptionApplication> getAllMyApplications(Adopter adopter){return adoptionApplicationRepository.findAllByAdopter(adopter);}
     private AdoptionApplication convertFromAppResToAdoption(ApplicationResponse applicationResponse){
         AdoptionApplication adoptionApplication = new AdoptionApplication();
@@ -70,6 +68,7 @@ public class AdoptionApplicationService {
                     x.setStatus(app.getStatus());
                     x.setAdopterEmail(app.getAdopter().getEmail());
                     x.setPetId(app.getPet().getId());
+                    x.setAppId(app.getId());
                     result.add(x);
 
                 }
@@ -82,23 +81,17 @@ public class AdoptionApplicationService {
     public boolean acceptApp(int id) {
         AdoptionApplication app = ar.findById(id);
         Pet pet = app.getPet();
-        if (pet.isBooked()) {
+        if (pet.isBooked() || app.getStatus().equalsIgnoreCase("Refused"))
             return false;
-        } else {
-            pet.setBooked(true);
-            app.setStatus("Accepted");
-            ar.save(app);
-            Notification notification = new Notification();
-            notification.setPet(pet);
-            notification.setAdopter(app.getAdopter());
-            notification.setContent("your Adoption Application for Pet of id "+pet.getId()+" has been accepted");
-            nr.save(notification);
-            return true;
-
-
-        }
-
-
+        pet.setBooked(true);
+        app.setStatus("Accepted");
+        ar.save(app);
+        Notification notification = new Notification();
+        notification.setPet(pet);
+        notification.setAdopter(app.getAdopter());
+        notification.setContent("your Adoption Application for Pet of id "+pet.getId()+" has been accepted");
+        nr.save(notification);
+        return true;
     }
     public boolean refuseApp(int id ){
         AdoptionApplication app = ar.findById(id);
