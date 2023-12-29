@@ -35,6 +35,7 @@ public class AdoptionApplicationService {
                  x.setStatus(app.getStatus());
                  x.setAdopterEmail(app.getAdopter().getEmail());
                  x.setPetId(app.getPet().getId());
+                 x.setAppId(app.getId());
                  result.add(x);
 
              }
