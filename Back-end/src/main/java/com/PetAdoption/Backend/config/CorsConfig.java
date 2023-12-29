@@ -1,4 +1,4 @@
-package com.BooksOcean.Backend.Config;
+package com.PetAdoption.Backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

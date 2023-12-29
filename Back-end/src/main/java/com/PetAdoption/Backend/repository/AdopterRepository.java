@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdopterRepository extends JpaRepository<Adopter, String> {
+    boolean existsByToken(String token);
     Adopter findByToken(String token);
 }
