@@ -1,12 +1,13 @@
 package com.PetAdoption.Backend.service;
 
-import com.PetAdoption.Backend.entity.Pet;
-import com.PetAdoption.Backend.entity.Shelter;
-import com.PetAdoption.Backend.entity.petAddFormDTO;
+import com.PetAdoption.Backend.entity.*;
+import com.PetAdoption.Backend.repository.AttachmentRepository;
 import com.PetAdoption.Backend.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,6 +16,8 @@ public class PetService {
     PetRepository pr;
     @Autowired
     ShelterService ss;
+    @Autowired
+    AttachmentRepository ar;
 
     public void addPetProfile(petAddFormDTO form, Shelter shelter){
         Pet pet =new Pet();
@@ -66,6 +69,31 @@ public class PetService {
 
 
     }
+    public void addAttachment(AttachmentDTO attachmentDTO){
+        Attachment attachmentobj = new Attachment();
+        attachmentobj.setPet(pr.findById(attachmentDTO.getPetId()).get());
+        attachmentobj.setAttachment(attachmentDTO.getAttachment());
+        ar.save(attachmentobj);
+
+
+
+    }
+
+    public Optional<Pet> getPetById (int id){
+        return pr.findById(id);
+    }
+  public List<AttachmentDTO> getAllAttachments(int petId){
+      List<Attachment> list1 = ar.findByPet_Id(petId);
+      List<AttachmentDTO> list2 = new ArrayList<>();
+      for(Attachment entry : list1){
+          AttachmentDTO obj = new AttachmentDTO();
+          obj.setPetId(petId);
+          obj.setAttachment(entry.getAttachment());
+          list2.add(obj);
+
+      }
+      return list2;
+  }
 
 
 }
