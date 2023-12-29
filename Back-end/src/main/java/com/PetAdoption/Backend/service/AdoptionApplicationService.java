@@ -1,10 +1,8 @@
 package com.PetAdoption.Backend.service;
 
-import com.PetAdoption.Backend.entity.AdoptionApplication;
-import com.PetAdoption.Backend.entity.AdoptionApplicationDTO;
-import com.PetAdoption.Backend.entity.Staff;
-import com.PetAdoption.Backend.entity.Pet;
+import com.PetAdoption.Backend.entity.*;
 import com.PetAdoption.Backend.repository.AdoptionApplicationRepository;
+import com.PetAdoption.Backend.repository.NotificationRepository;
 import com.PetAdoption.Backend.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,8 @@ public class AdoptionApplicationService {
     StaffService ss;
     @Autowired
     PetRepository pr;
+    @Autowired
+    NotificationRepository nr;
      public List<AdoptionApplicationDTO> getAllRequests(String token){
          Staff staff= ss.getStaffByToken(token);
          if(staff==null){
@@ -59,6 +59,11 @@ public class AdoptionApplicationService {
             pet.setBooked(true);
             app.setStatus("Accepted");
             ar.save(app);
+            Notification notification = new Notification();
+            notification.setPet(pet);
+            notification.setAdopter(app.getAdopter());
+            notification.setContent("your Adoption Application for Pet of id "+pet.getId()+" has been accepted");
+            nr.save(notification);
             return true;
 
 
@@ -71,12 +76,18 @@ public class AdoptionApplicationService {
      }
     public boolean refuseApp(int id ){
         AdoptionApplication app = ar.findById(id);
+        Pet pet = app.getPet();
         if(app.getStatus().equals("Accepted"))
             return false;
         else{
         app.setStatus("Refused");
 
         ar.save(app);
+            Notification notification = new Notification();
+            notification.setPet(pet);
+            notification.setAdopter(app.getAdopter());
+            notification.setContent("your Adoption Application for Pet of id "+pet.getId()+" has been refused");
+            nr.save(notification);
         return true;}
 
 
