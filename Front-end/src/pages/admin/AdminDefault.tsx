@@ -8,9 +8,9 @@ import { createShelter } from '../../services/shelter';
 const AdminDefault: React.FC = () => {
   const [formData, setFormData] = useState<ShelterCreation>({
     email: '',
-    name: '',
-    location: '',
-    phone: '',
+    shelterName: '',
+    shelterLocation: '',
+    shelterPhone: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,8 +45,8 @@ const AdminDefault: React.FC = () => {
       />
       <TextField
         label="Shelter Name"
-        name="name"
-        value={formData.name}
+        name="shelterName"
+        value={formData.shelterName}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -54,8 +54,8 @@ const AdminDefault: React.FC = () => {
       />
       <TextField
         label="Shelter Location"
-        name="location"
-        value={formData.location}
+        name="shelterLocation"
+        value={formData.shelterLocation}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -63,8 +63,8 @@ const AdminDefault: React.FC = () => {
       />
       <TextField
         label="Phone"
-        name="phone"
-        value={formData.phone}
+        name="shelterPhone"
+        value={formData.shelterPhone}
         onChange={handleChange}
         fullWidth
         margin="normal"

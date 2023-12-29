@@ -7,7 +7,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 export const getShelter = async (): Promise<Shelter> => {
     try {
         const token = getUserCredentials()?.token; // Replace with your actual access token
-        const response: AxiosResponse<Shelter> = await axios.get(`${API_URL}/shelter/get`, {
+        const response: AxiosResponse<any> = await axios.get(`${API_URL}/shelter/getShelter`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -15,7 +15,7 @@ export const getShelter = async (): Promise<Shelter> => {
         
         // Handle the response data here
         console.log(response.data);
-        return response.data;
+        return response.data.shelter;
       } catch (error) {
         // Handle errors here
         console.error('Error fetching data:', error);
@@ -30,7 +30,7 @@ export const getShelter = async (): Promise<Shelter> => {
 export const editShelter = async (shelter: Shelter): Promise<string> => {
     try {
       const token = getUserCredentials()?.token; // Replace with your actual access token
-      const response: AxiosResponse = await axios.put(`${API_URL}/data/update`, shelter, {
+      const response: AxiosResponse = await axios.put(`${API_URL}/shelter/editShelter`, shelter, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ export const editShelter = async (shelter: Shelter): Promise<string> => {
       });
       // Handle the response data here
       console.log(response.data);
-      return (response.data.message);
+      return (response.data);
     } catch (error) {
       // Handle errors here
       console.error('Error Editting shelter: ', error);
@@ -49,7 +49,7 @@ export const editShelter = async (shelter: Shelter): Promise<string> => {
 export const hireStaffMember = async (form: StaffPromotion): Promise<string> => {
     try {
       const token = getUserCredentials()?.token; // Replace with your actual access token
-      const response: AxiosResponse<string> = await axios.post(`${API_URL}/staff/promote`, form, {
+      const response: AxiosResponse<string> = await axios.post(`${API_URL}/promotion/promoteToStaff`, form, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,

@@ -15,7 +15,7 @@ export const signUp = async (form: SignUpForm): Promise<void> => {
         );
         const status = response.status;
         if(status < 300){
-            window.alert(`Signed up successfully/n${response.data}`)
+            window.alert(`${response.data}`)
             return;
         }
         window.alert(`Sign up failed/n${response.data}`)
@@ -81,6 +81,7 @@ export const logout = async (): Promise<void> => {
         localStorage.removeItem(userCredentialsNameInStorage);
     }catch(error:any){
         console.error(error)
+        localStorage.removeItem(userCredentialsNameInStorage);
     }
 };
 

@@ -1,9 +1,13 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import CustomAppBar from '../../components/AppBar'
 
 const Manager = () => {
   return (
-    <Outlet />
+    <div>
+      <CustomAppBar />
+      <Outlet />
+    </div>
   )
 }
 

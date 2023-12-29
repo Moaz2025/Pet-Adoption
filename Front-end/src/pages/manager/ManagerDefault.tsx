@@ -47,7 +47,6 @@ const ManagerDefault = () => {
   
   return (
     <div>
-      <CustomAppBar />
       <Paper sx={{marginY: 2}}>
         <ShelterInfo shelter={shelter}></ShelterInfo>
       </Paper>

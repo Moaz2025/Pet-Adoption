@@ -56,7 +56,7 @@ const Login: React.FC = () => {
     login(form)
       .then((responce: LoginResponse) => {
         if(responce.status! < 300){
-          navigate('/adopter');
+          navigate('/admin');
         }else{          
           alert('Login failed');
         }

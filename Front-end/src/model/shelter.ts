@@ -6,9 +6,9 @@ export interface Shelter{
 
 export interface ShelterCreation{
     email: string
-    name: string
-    location: string
-    phone: string
+    shelterName: string
+    shelterLocation: string
+    shelterPhone: string
 }
 
 export interface StaffPromotion{

@@ -17,6 +17,11 @@ import Manager from "./pages/manager/Manager";
 import ManagerDefault from "./pages/manager/ManagerDefault";
 import Staff from "./pages/staff/Staff";
 import StaffDefault from "./pages/staff/StaffDefault";
+import PetAdd from "./pages/staff/PetAdd";
+import Applications from "./pages/staff/Applications";
+import AdopterApplications from "./pages/adopter/AdopterApplications";
+import PetEdit from "./pages/staff/PetEdit";
+import PetDetails from "./pages/adopter/PetDetails";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +38,8 @@ const router = createBrowserRouter(
       {/* Adopter Route */}
       <Route path="adopter" element={<Adopter />}>
         <Route index element={<AdopterDefault />} />
+        <Route path="applications" element={<AdopterApplications />} />
+        <Route path=":id" element={<PetDetails />} />
       </Route>
 
       {/* Admin Route */}
@@ -48,6 +55,9 @@ const router = createBrowserRouter(
       {/* Staff Route */}
       <Route path="staff" element={<Staff />}>
         <Route index element={<StaffDefault />} />
+        <Route path=":id" element={<PetEdit />} />
+        <Route path="add" element={<PetAdd />} />
+        <Route path="applications" element={<Applications />} />
       </Route>
 
       {/* Set default routing as log in page*/}

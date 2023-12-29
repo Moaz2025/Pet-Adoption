@@ -1,4 +1,5 @@
 export interface AdoptionAppliction{
+    appId: number
     adopterEmail: string
     petId: number
     status: string
