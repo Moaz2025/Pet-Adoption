@@ -136,7 +136,7 @@ public class PetService {
         petResponse.setBehavior(pet.getBehavior());
         petResponse.setBreed(pet.getBreed());
         petResponse.setDescription(pet.getDescription());
-        petResponse.setBooked(pet.isBooked());
+        petResponse.setIsBooked(pet.isBooked());
         petResponse.setGender(pet.getGender());
         petResponse.setName(pet.getName());
         if(pet.getShelter() == null)

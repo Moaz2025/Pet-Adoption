@@ -2,6 +2,7 @@ package com.PetAdoption.Backend.entity;
 
 
 import lombok.Data;
+import lombok.Setter;
 
 @Data
 public class PetResponse {
@@ -10,7 +11,7 @@ public class PetResponse {
     private String shelterName; //edited
     private String species;
     private String breed;
-    private boolean isBooked;
+    private Boolean isBooked;
     private float age;
     private String behavior;
     private String description;
@@ -19,4 +20,5 @@ public class PetResponse {
     private String vaccination;
     private String spaying;
     private String neutering;
+
 }

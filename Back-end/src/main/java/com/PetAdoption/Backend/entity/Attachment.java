@@ -14,5 +14,6 @@ public class Attachment {
     @ManyToOne
     @JoinColumn(name = "petId")
     private Pet pet;
+    @Column(length = 200)
     private String attachment;
 }
