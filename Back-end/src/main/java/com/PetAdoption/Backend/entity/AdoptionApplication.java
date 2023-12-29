@@ -17,5 +17,5 @@ public class AdoptionApplication {
     @ManyToOne
     @JoinColumn(name = "petId")
     private Pet pet;
-    private String status;
+    private boolean status;//edited to boolean
 }
