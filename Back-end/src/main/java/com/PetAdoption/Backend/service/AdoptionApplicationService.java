@@ -30,9 +30,19 @@ public class AdoptionApplicationService {
 
         try {
             AdoptionApplication adoptionApplication = convertFromAppResToAdoption(applicationResponse);
-            if(adoptionApplication == null) return "Unsaved";
+            List<AdoptionApplication> adoptionApplicationList = adoptionApplicationRepository.findByPetAndAdopter(adoptionApplication.getPet(),adoptionApplication.getAdopter());
+            // boolean isSameAdoptionApplication = false;
+            for(AdoptionApplication adoptionApplication1 : adoptionApplicationList){
+                if(adoptionApplication1.getPet().getId() == adoptionApplication.getPet().getId() &&
+                        adoptionApplication1.getAdopter().getEmail().equals(adoptionApplication.getAdopter().getEmail())) {
+                        if (!adoptionApplication1.getStatus().equals("Refused") )
+                            return "you have applied before";
+                }
+            }
+
+            if(adoptionApplication == null) return "can't adopt this";
             adoptionApplicationRepository.save(adoptionApplication);
-            return "saved";
+            return "you request is pending now";
         }catch (Exception e){
             System.out.println(e);
             return "can't adopt this pet";
@@ -84,13 +94,15 @@ public class AdoptionApplicationService {
         if (pet.isBooked() || app.getStatus().equalsIgnoreCase("Refused"))
             return false;
         pet.setBooked(true);
+        app.setPet(pet);
         app.setStatus("Accepted");
+        // this part is replaced with a trigger
         ar.save(app);
-        Notification notification = new Notification();
+        /*Notification notification = new Notification();
         notification.setPet(pet);
         notification.setAdopter(app.getAdopter());
         notification.setContent("your Adoption Application for Pet of id "+pet.getId()+" has been accepted");
-        nr.save(notification);
+        nr.save(notification);*/
         return true;
     }
     public boolean refuseApp(int id ){
@@ -100,12 +112,13 @@ public class AdoptionApplicationService {
             return false;
         else{
             app.setStatus("Refused");
+            // this part is replaced with trigger
             ar.save(app);
-            Notification notification = new Notification();
+            /*Notification notification = new Notification();
             notification.setPet(pet);
             notification.setAdopter(app.getAdopter());
             notification.setContent("your Adoption Application for Pet of id "+pet.getId()+" has been refused");
-            nr.save(notification);
+            nr.save(notification);*/
             return true;}
     }
 
