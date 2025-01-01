@@ -50,7 +50,7 @@ The database includes key entities such as:
 ### Prerequisites  
 1. Install [Java 11 or higher](https://adoptopenjdk.net/).  
 2. Install [Node.js](https://nodejs.org/).  
-3. Install [MySQL/PostgreSQL](https://www.mysql.com/) or your preferred database system.  
+3. Install [MySQL](https://www.mysql.com/) or your preferred database system.  
 
 ### ERD Model
 ![database](https://github.com/user-attachments/assets/befb45a1-2cc4-4d6f-9f88-fe431a39cf31)
